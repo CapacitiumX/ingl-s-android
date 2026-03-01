@@ -1,265 +1,212 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroLingua V310 - Mobile Optimized</title>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+    <title>NeuroLingua V310 - Fixed Voices</title>
     <style>
-        :root {
-            --primary: #8b5cf6; --accent: #06b6d4; --dark: #0f172a; --panel: #1e293b;
-            --text: #f1f5f9; --green: #22c55e; --red: #ef4444;
-        }
+        :root { --primary: #8b5cf6; --accent: #06b6d4; --dark: #0f172a; --panel: #1e293b; --text: #f1f5f9; --green: #22c55e; --red: #ef4444; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: var(--text); margin: 0; height: 100vh; display: flex; overflow: hidden; }
-        .layout { display: flex; width: 100%; height: 100%; flex-direction: row; }
-        
-        /* Ajuste responsivo para móviles si es necesario, pero mantenemos estructura */
-        @media (max-width: 800px) {
-            .left-panel { width: 150px !important; font-size: 0.7rem; }
-            .word-en { font-size: 2rem !important; }
-            .brand { font-size: 0.8rem !important; }
-        }
-
-        .left-panel { width: 350px; background: var(--panel); border-right: 1px solid #334155; display: flex; flex-direction: column; padding: 15px; gap: 10px; }
-        .brand { font-size: 1.4rem; font-weight: 900; color: var(--accent); text-align: center; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px;}
+        .layout { display: flex; width: 100%; height: 100%; }
+        .left-panel { width: 320px; background: var(--panel); border-right: 1px solid #334155; display: flex; flex-direction: column; padding: 15px; gap: 10px; }
         .config-box { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border: 1px solid #334155; }
-        .row { display: flex; gap: 5px; margin-bottom: 5px; align-items: center; }
-        input, select { background: #0f172a; color: white; border: 1px solid #475569; padding: 8px; border-radius: 4px; width: 100%; font-size: 0.85rem; }
-        button { cursor: pointer; padding: 8px; border-radius: 4px; border: none; font-weight: bold; color: white; font-size: 0.8rem; transition: 0.2s; flex: 1; }
-        
-        .btn-green { background: var(--green); } .btn-blue { background: #3b82f6; } .btn-red { background: var(--red); }
-        .btn-purple { background: var(--primary); } .btn-orange { background: #f59e0b; color: black; }
-
-        .words-list-container { flex: 1; overflow-y: auto; background: #0f172a; border: 1px solid #334155; border-radius: 5px; padding: 5px; }
-        .list-item { padding: 8px 10px; border-bottom: 1px solid #1e293b; font-size: 0.9rem; display: flex; justify-content: space-between; cursor: pointer; align-items: center; }
-        .list-item.active { background: var(--primary); color: white; }
-
-        .right-panel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: relative; }
-        .flashcard { width: 100%; max-width: 700px; height: 80vh; background: #1e293b; border: 1px solid #334155; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); }
-        
-        .img-area { flex: 4; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .real-img { width: 100%; height: 100%; object-fit: contain; }
-        
-        .info-area { flex: 3; padding: 15px; text-align: center; background: #1e293b; }
-        .word-en { font-size: 3rem; font-weight: 900; margin: 0; color: white; }
-        .word-es { font-size: 1.8rem; color: var(--accent); font-weight: bold; }
-
-        .eval-bar { display: flex; gap: 10px; width: 100%; max-width: 700px; margin-top: 10px; }
-        .player-bar { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
-        .play-btn { width: 60px; height: 60px; border-radius: 50%; background: var(--accent); border: none; font-size: 1.5rem; cursor: pointer; }
-
-        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; justify-content:center; align-items:center; }
-        .modal-box { background: var(--panel); padding: 20px; border-radius: 10px; width: 90%; max-width: 500px; }
+        .row { display: flex; gap: 5px; margin-bottom: 5px; }
+        select, input { background: #0f172a; color: white; border: 1px solid #475569; padding: 8px; border-radius: 4px; width: 100%; font-size: 0.8rem; }
+        button { cursor: pointer; padding: 8px; border-radius: 4px; border: none; font-weight: bold; color: white; }
+        .btn-purple { background: var(--primary); } .btn-green { background: var(--green); } .btn-red { background: var(--red); }
+        .words-list { flex: 1; overflow-y: auto; background: #0f172a; border: 1px solid #334155; border-radius: 5px; margin-top: 10px; }
+        .list-item { padding: 8px; border-bottom: 1px solid #1e293b; font-size: 0.85rem; cursor: pointer; }
+        .list-item.active { background: var(--primary); }
+        .right-panel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .flashcard { width: 100%; max-width: 600px; background: #1e293b; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .word-en { font-size: 3rem; margin: 0; color: white; }
+        .word-es { font-size: 1.8rem; color: var(--accent); margin: 10px 0; }
+        .play-btn { width: 70px; height: 70px; border-radius: 50%; background: var(--accent); font-size: 2rem; border: none; margin-top: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="layout">
     <div class="left-panel">
-        <div class="brand">NEURO LINGUA V310</div>
+        <div style="font-weight: 900; color: var(--accent);">NEURO LINGUA V310</div>
         <div class="config-box">
-            <div class="row">
-                <input type="text" id="filename" placeholder="Nombre de lista">
-                <button class="btn-green" onclick="saveList()">💾</button>
-            </div>
-            <div class="row">
-                <select id="fileSelector"><option>-- Listas --</option></select>
-                <button class="btn-blue" onclick="loadList()">📂</button>
-            </div>
+            <label style="font-size: 0.7rem;">VOZ INGLÉS:</label>
+            <select id="voiceEn"><option value="">Cargando...</option></select>
+            <label style="font-size: 0.7rem; margin-top: 5px; display: block;">VOZ ESPAÑOL:</label>
+            <select id="voiceEs"><option value="">Cargando...</option></select>
         </div>
-        <div class="config-box">
-            <div class="row">
-                <button class="btn-purple" onclick="document.getElementById('modalLoad').style.display='flex'">📝 PEGAR</button>
-                <button class="btn-red" onclick="clearAll()">🧹</button>
-            </div>
-            <div class="row">
-                <select id="voiceEn"><option value="">Cargando voces...</option></select>
-            </div>
-            <div class="row">
-                <select id="voiceEs"><option value="">Cargando voces...</option></select>
-            </div>
+        <div class="row">
+            <button class="btn-purple" style="flex:1" onclick="document.getElementById('modal').style.display='flex'">📝 PEGAR</button>
+            <button class="btn-red" onclick="clearAll()">🧹</button>
         </div>
-        <div id="visualList" class="words-list-container"></div>
+        <div id="visualList" class="words-list"></div>
     </div>
 
     <div class="right-panel">
         <div class="flashcard">
-            <div class="img-area"><img id="cardImg" class="real-img" src="" alt=""></div>
-            <div class="info-area">
-                <h1 id="wordEn" class="word-en">Ready?</h1>
-                <div id="wordEs" class="word-es" contenteditable="true">¿Listo?</div>
-                <div style="margin-top:10px; font-size:0.9rem; color:#94a3b8;">
-                    <i id="sentEn">Paste your words on the left.</i><br>
-                    <span id="sentEs">Pega tus palabras a la izquierda.</span>
-                </div>
-            </div>
+            <h1 id="wordEn" class="word-en">Ready?</h1>
+            <div id="wordEs" class="word-es">¿Listo?</div>
+            <p id="sentEn" style="font-style: italic; color: #94a3b8;"></p>
+            <p id="sentEs" style="color: #64748b;"></p>
         </div>
-        <div class="eval-bar">
-            <button class="btn-red" onclick="markWord('review')">❌ NO SÉ</button>
-            <button class="btn-green" onclick="markWord('learned')">✅ SÉ</button>
+        <div class="row" style="margin-top: 20px; gap: 20px;">
+            <button onclick="prevCard()" style="background:none; font-size: 2rem;">⏮️</button>
+            <button id="btnPlay" class="play-btn" onclick="togglePlay()">▶</button>
+            <button onclick="nextCard()" style="background:none; font-size: 2rem;">⏭️</button>
         </div>
-        <div class="player-bar">
-            <button onclick="prevCard()" style="background:none; font-size:2rem;">⏮️</button>
-            <button class="play-btn" id="btnPlay" onclick="togglePlay()">▶</button>
-            <button onclick="nextCard()" style="background:none; font-size:2rem;">⏭️</button>
-            <select id="timerSelect" style="width:70px;"><option value="3000">3s</option><option value="5000" selected>5s</option></select>
-        </div>
+        <select id="timerSelect" style="width: auto; margin-top: 10px;"><option value="4000">4s</option><option value="6000" selected>6s</option></select>
     </div>
 </div>
 
-<div id="modalLoad" class="modal">
-    <div class="modal-box">
-        <h3>Pegar hasta 1000 palabras</h3>
-        <textarea id="bulkText" style="width:100%; height:200px; background:#000; color:#fff;" placeholder="Una palabra por línea..."></textarea>
+<div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:99; justify-content:center; align-items:center;">
+    <div style="background:var(--panel); padding:20px; border-radius:10px; width:90%; max-width:400px;">
+        <h3>Pegar Lista (Hasta 1000)</h3>
+        <textarea id="bulkText" style="width:100%; height:200px; background:#000; color:#fff; border:1px solid #444;"></textarea>
         <div class="row" style="margin-top:10px;">
-            <button class="btn-red" onclick="document.getElementById('modalLoad').style.display='none'">Cerrar</button>
-            <button class="btn-green" onclick="processBulk()">CARGAR ⚡</button>
+            <button class="btn-red" style="flex:1" onclick="document.getElementById('modal').style.display='none'">CERRAR</button>
+            <button class="btn-green" style="flex:1" onclick="processBulk()">CARGAR</button>
         </div>
     </div>
 </div>
 
 <script>
-    let app = { fullList: [], activeList: [], index: 0, playing: false, timer: null, bgInterval: null };
+    let app = { fullList: [], index: 0, playing: false, timer: null, voices: [] };
 
-    // --- FIX VOCES ANDROID ---
-    function loadVoices() {
-        const vs = window.speechSynthesis.getVoices();
-        const e1 = document.getElementById('voiceEn');
-        const e2 = document.getElementById('voiceEs');
-        
-        if (vs.length === 0) return; // Reintentará por el evento o el setInterval
+    // --- MOTOR DE VOCES (FIX PARA ANDROID) ---
+    function initVoices() {
+        app.voices = window.speechSynthesis.getVoices();
+        if (app.voices.length === 0) return;
 
-        e1.innerHTML = ''; e2.innerHTML = '';
-        
-        vs.forEach((v, i) => {
-            let o = document.createElement('option');
-            o.value = i;
-            o.textContent = `${v.name} (${v.lang})`;
+        const vEn = document.getElementById('voiceEn');
+        const vEs = document.getElementById('voiceEs');
+        vEn.innerHTML = ''; vEs.innerHTML = '';
+
+        app.voices.forEach((v, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = v.name;
             
-            if (v.lang.startsWith('en')) e1.appendChild(o.cloneNode(true));
-            if (v.lang.startsWith('es')) e2.appendChild(o.cloneNode(true));
+            // Filtrar estrictamente por lenguaje
+            if (v.lang.toLowerCase().includes('en')) vEn.appendChild(opt.cloneNode(true));
+            if (v.lang.toLowerCase().includes('es')) vEs.appendChild(opt.cloneNode(true));
         });
 
-        // Seleccionar por defecto algo coherente
-        if (e1.options.length > 0) e1.selectedIndex = 0;
-        if (e2.options.length > 0) e2.selectedIndex = 0;
+        // Autoseleccionar Google US English si existe
+        Array.from(vEn.options).forEach((o, i) => {
+            if(o.text.includes("Google") && o.text.includes("US")) vEn.selectedIndex = i;
+        });
     }
 
-    // Intervalo de seguridad para Android
-    const voiceCheck = setInterval(() => {
-        if (window.speechSynthesis.getVoices().length > 0) {
-            loadVoices();
-            clearInterval(voiceCheck);
+    // Android re-check
+    window.speechSynthesis.onvoiceschanged = initVoices;
+    setInterval(() => { if(app.voices.length === 0) initVoices(); }, 1000);
+
+    function speakDual() {
+        window.speechSynthesis.cancel();
+        const item = app.fullList[app.index];
+        if (!item) return;
+
+        const vs = window.speechSynthesis.getVoices();
+        const idxEn = document.getElementById('voiceEn').value;
+        const idxEs = document.getElementById('voiceEs').value;
+
+        // 1. Hablar Inglés
+        const utEn = new SpeechSynthesisUtterance(item.en);
+        utEn.lang = 'en-US'; // Forzar idioma a nivel de objeto
+        if (vs[idxEn]) utEn.voice = vs[idxEn];
+        utEn.rate = 0.85;
+        window.speechSynthesis.speak(utEn);
+
+        // 2. Pequeña pausa
+        const pause = new SpeechSynthesisUtterance("");
+        pause.duration = 0.5;
+        window.speechSynthesis.speak(pause);
+
+        // 3. Hablar Español
+        if (item.es !== "...") {
+            const utEs = new SpeechSynthesisUtterance(item.es);
+            utEs.lang = 'es-ES'; // Forzar idioma
+            if (vs[idxEs]) utEs.voice = vs[idxEs];
+            utEs.rate = 1.0;
+            window.speechSynthesis.speak(utEs);
         }
-    }, 500);
+    }
 
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-
+    // --- LOGICA DE LISTA ---
     function processBulk() {
-        const txt = document.getElementById('bulkText').value;
-        const lines = txt.split('\n').filter(l => l.trim().length > 0);
-        
-        // Límite de 1000
-        const limitedLines = lines.slice(0, 1000);
-
-        limitedLines.forEach(line => {
+        const lines = document.getElementById('bulkText').value.split('\n').filter(l => l.trim().length > 0).slice(0, 1000);
+        lines.forEach(line => {
             let w = line.replace(/^\d+[\.\)\-]?\s*/, '').trim();
-            if(!app.fullList.some(x => x.en === w)) {
-                app.fullList.push({
-                    en: w, es: "...", sentEn: "Loading...", sentEs: "...", status: 'new',
-                    img: `https://tse2.mm.bing.net/th?q=${encodeURIComponent(w)}+sport+hd&w=800&h=800&c=7&rs=1`
-                });
-            }
+            app.fullList.push({ en: w, es: "...", sentEn: "", sentEs: "" });
         });
-
-        document.getElementById('modalLoad').style.display = 'none';
-        app.activeList = app.fullList;
-        renderVisualList();
-        updateCardUI();
-        startTranslator();
+        document.getElementById('modal').style.display = 'none';
+        renderList();
+        updateUI();
+        translateNext();
     }
 
-    async function startTranslator() {
-        if(app.bgInterval) clearInterval(app.bgInterval);
-        app.bgInterval = setInterval(async () => {
-            const item = app.fullList.find(x => x.es === "...");
-            if(!item) return;
-            try {
-                const r = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=es&dt=t&q=${encodeURIComponent(item.en)}`);
-                const j = await r.json();
-                item.es = j[0][0][0];
-                item.sentEn = `This is a professional ${item.en}.`;
-                item.sentEs = `Esto es un/a ${item.es} profesional.`;
-                if(app.activeList[app.index] === item) updateCardUI();
-                renderVisualList();
-            } catch(e) {}
-        }, 1500);
+    async function translateNext() {
+        const item = app.fullList.find(x => x.es === "...");
+        if (!item) return;
+        try {
+            const r = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=es&dt=t&q=${encodeURIComponent(item.en)}`);
+            const j = await r.json();
+            item.es = j[0][0][0];
+            renderList();
+            if (app.fullList[app.index] === item) updateUI();
+            setTimeout(translateNext, 1000);
+        } catch(e) { setTimeout(translateNext, 3000); }
     }
 
-    function updateCardUI() {
-        if (app.activeList.length === 0) return;
-        const item = app.activeList[app.index];
+    function updateUI() {
+        if (!app.fullList[app.index]) return;
+        const item = app.fullList[app.index];
         document.getElementById('wordEn').innerText = item.en;
         document.getElementById('wordEs').innerText = item.es;
-        document.getElementById('sentEn').innerText = item.sentEn;
-        document.getElementById('sentEs').innerText = item.sentEs;
-        document.getElementById('cardImg').src = item.img;
         
-        if (app.playing) speak();
-    }
-
-    function speak() {
-        window.speechSynthesis.cancel();
-        const item = app.activeList[app.index];
-        const vs = window.speechSynthesis.getVoices();
-        const vEnIdx = document.getElementById('voiceEn').value;
-        const vEsIdx = document.getElementById('voiceEs').value;
-
-        if (vEnIdx !== "") {
-            const utEn = new SpeechSynthesisUtterance(item.en);
-            utEn.voice = vs[vEnIdx];
-            window.speechSynthesis.speak(utEn);
+        const items = document.querySelectorAll('.list-item');
+        items.forEach(el => el.classList.remove('active'));
+        if (items[app.index]) {
+            items[app.index].classList.add('active');
+            items[app.index].scrollIntoView({ block: 'nearest' });
         }
-    }
-
-    function renderVisualList() {
-        const c = document.getElementById('visualList');
-        c.innerHTML = '';
-        app.activeList.forEach((it, i) => {
-            const d = document.createElement('div');
-            d.className = `list-item ${i === app.index ? 'active' : ''}`;
-            d.innerHTML = `<span>${i+1}. ${it.en}</span>`;
-            d.onclick = () => { app.index = i; updateCardUI(); };
-            c.appendChild(d);
-        });
     }
 
     function togglePlay() {
         app.playing = !app.playing;
         document.getElementById('btnPlay').innerText = app.playing ? "⏸" : "▶";
         if (app.playing) {
-            app.timer = setInterval(() => nextCard(), document.getElementById('timerSelect').value);
-            speak();
+            speakDual();
+            app.timer = setInterval(nextCard, document.getElementById('timerSelect').value);
         } else {
             clearInterval(app.timer);
+            window.speechSynthesis.cancel();
         }
     }
 
-    function nextCard() { app.index = (app.index + 1) % app.activeList.length; updateCardUI(); }
-    function prevCard() { app.index = (app.index - 1 + app.activeList.length) % app.activeList.length; updateCardUI(); }
-    function clearAll() { app.fullList = []; app.activeList = []; renderVisualList(); }
-    
-    function saveList() {
-        const name = document.getElementById('filename').value || 'lista';
-        try {
-            localStorage.setItem('NL_'+name, JSON.stringify(app.fullList));
-            alert("Guardado en navegador");
-        } catch(e) {
-            alert("Memoria del navegador llena. Usa la opción de descargar JSON.");
-        }
+    function nextCard() {
+        app.index = (app.index + 1) % app.fullList.length;
+        updateUI();
+        if (app.playing) speakDual();
     }
+
+    function prevCard() {
+        app.index = (app.index - 1 + app.fullList.length) % app.fullList.length;
+        updateUI();
+        speakDual();
+    }
+
+    function renderList() {
+        const cont = document.getElementById('visualList');
+        cont.innerHTML = app.fullList.map((it, i) => `
+            <div class="list-item ${i === app.index ? 'active' : ''}" onclick="app.index=${i}; updateUI(); speakDual();">
+                ${i+1}. ${it.en} <span style="float:right; opacity:0.5">${it.es}</span>
+            </div>
+        `).join('');
+    }
+
+    function clearAll() { app.fullList = []; renderList(); app.index = 0; updateUI(); }
 </script>
 </body>
 </html>
+      
